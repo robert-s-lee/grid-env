@@ -1,6 +1,6 @@
 import sys
 import os
-from kubernetes import client, config
+import kubernetes.client
 import pkg_resources
 
 # a simple script to echo arguments and dump out K8s environment
