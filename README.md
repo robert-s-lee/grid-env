@@ -1,19 +1,17 @@
-![Grid](https://img.shields.io/badge/rid_AI-run-78FF96.svg?labelColor=black&logo=data:image/svg%2bxml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMTR2MjBhMTQgMTQgMCAwMDE0IDE0aDlWMzYuOEgxMi42VjExaDIyLjV2N2gxMS4yVjE0QTE0IDE0IDAgMDAzMi40IDBIMTVBMTQgMTQgMCAwMDEgMTR6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTM1LjIgNDhoMTEuMlYyNS41SDIzLjl2MTEuM2gxMS4zVjQ4eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==)
-[here](https://platform.grid.ai/#/runs?script=https://github.com/robert-s-lee/argecho/blob/4ef79a58/argecho.py&cloud=grid&instance=t2.medium&accelerators=1&disk_size=200&framework=lightning&script_args=--grid_name%20cherubic-lyrebird-836%20%5C%0A--grid_strategy%20grid_search%20%5C%0A--grid_disk_size%20200%20%5C%0A--grid_max_nodes%2010%20%5C%0A--grid_instance_type%20t2.medium%20%5C%0A--use_spot%20true%20%5C%0A--grid_credential%20cc-qdfdk%20%5C%0A--grid_framework%20lightning%20%5C%0A--grid_cpus%201%20%5C%0Aargecho.py%20data_dir%3D%2Fdatastores%2Fmnist%20batch_size%3D128%20epochs%3D2
-)
+Grid reduces boilerplate codes required to run experiments. 
+
+# What Happens on Submit
+
+A simplest way to run a script is to issue: 
+```bash
+% grid run argecho.py --arg1 1 --arg2 2
+``` 
+
+This has no Grid command line argument, no Grid `.yaml`, no requirements.txt.  A script with all defaults will show a scary message `WARNING No requirements.txt or environment.yml found but we identified below dependencies from your source.Your build could crash or not start.`  Lets take step by step to see what this means.
 
 ```bash
-% grid run argecho.py --test
+% grid run argecho.py --arg1 1 --arg2 2
 WARNING Neither a CPU or GPU number was specified. 1 CPU will be used as a default. To use N GPUs pass in '--grid_gpus N' flag.
-
-
-        WARNING
-        No requirements.txt or environment.yml found but we identified below
-        dependencies from your source. Your build could crash or not
-        start.
-
-
-
 
                 Run submitted!
                 `grid status` to list all runs
@@ -53,6 +51,7 @@ WARNING Neither a CPU or GPU number was specified. 1 CPU will be used as a defau
 └────────────┴────────┴───────────────┴─────────────┴─────┘
 ```
 
+# Automatic Docker Image for each Code
 
 ```
 % grid logs lurking-seahorse-950-expo

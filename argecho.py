@@ -1,6 +1,5 @@
 import sys
 import os
-import pkg_resources
 import subprocess
 
 # args
@@ -21,13 +20,3 @@ while(True):
    print(line.decode("utf-8").strip())
    if retcode is not None:
       break
-
-# python packages
-print("\nPython Version:")
-print(sys.version)
-
-print("\nPython Packages:")
-installed_packages = pkg_resources.working_set
-installed_packages_list = sorted(["%s==%s" % (i.key, i.version)
-   for i in installed_packages])
-print(installed_packages_list)
