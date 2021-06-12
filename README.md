@@ -1,4 +1,10 @@
-Grid reduces boilerplate codes required to run experiments. 
+Grid can run any Python code with Zero Modifications.  
+Grid does all the work outside the code to automatically setup the Docker environment and cached the image for reuse.  
+The image can be fine tuned by providing `requirement.txt` and Grid `.yaml` files. 
+
+# Run any Python code
+Grid can run any Python code with Zero Modifications.  
+
 
 # What Happens on Submit
 
