@@ -1,19 +1,86 @@
-Grid can run any Python code with Zero Modifications.  
-Grid does all the work outside the code to automatically setup the Docker environment and cached the image for reuse.  
-The image can be fine tuned by providing `requirement.txt` and Grid `.yaml` files. 
+Grid can run any Python code with *Zero Modifications*.
+This tutorial provides an overview on how *Zero Modifications* is accomplished.
+To follow this tutorial, please sign up for free [Community Grid](https://www.grid.ai/). 
+Optionally, join [Community Slack](http://gridai-community.slack.com/) and review [Docs](https://docs.grid.ai/).
+
+With Grid, Python code does not require any specific library or hooks to be present.
+Fundamentally, Grid automatically: 
+- examines the code 
+- provisions container image with all dependencies 
+- caches this image for reuse
+- provisions K8s pods
+- mounts storage devices including training data
+- runs the code
+- saves all artifacts
+
+The container image and K8s pods can be fine tuned with 
+the standard Python `requirement.txt` and Grid specific `.yaml` files.
+Grid can be treated as a black box.
+Understanding the input, output, observing the behavior, and affecting the behavior can maximize the benefits. 
 
 # Run any Python code
-Grid can run any Python code with Zero Modifications.  
+
+Lets look at command line arguments, storage devices, and OS.  Working directory and File Systems mounts are different as expected.
+
+For those on OSX, Linux, Windows:
+
+- Access to Grid
+```
+conda create -name gridai --python=3.8.5
+conda activate gridai
+pip install lightning-grid
+grid login --username xxxx --key xxxx
+```
+- Obtain the sample code
+```
+git clone https://github.com/robert-s-lee/argecho
+cd argecho 
+```
+- Run the code locally and Grid
+```
+python   argecho.py --arg1 1 --arg2 2
+grid run argecho.py --arg1 1 --arg2 2
+```
+The output from local:
+```
+% python   argecho.py --arg1 1 --arg2 2
+
+Arguments:
+Number of arguments: 5 arguments.
+Argument List: ['argecho.py', '--arg1', '1', '--arg2', '2']
+
+Working Directory:
+os.getcwd=/Users/rslee/github/argecho
+
+File Systems Mounted:
+Filesystem       Size   Used  Avail Capacity iused      ifree %iused  Mounted on
+/dev/disk1s5s1   251G    23G    31G    43%  559993 2447541327    0%   /
+```
 
 
-# What Happens on Submit
+The output from Grid:
+```
+Arguments:
+Number of arguments: 5 arguments.
+Argument List: ['argecho.py', '--arg1', '1', '--arg2', '2']
 
-A simplest way to run a script is to issue: 
-```bash
-% grid run argecho.py --arg1 1 --arg2 2
-``` 
+Working Directory:
+os.getcwd=/gridai/project
 
-This has no Grid command line argument, no Grid `.yaml`, no requirements.txt.  A script with all defaults will show a scary message `WARNING No requirements.txt or environment.yml found but we identified below dependencies from your source.Your build could crash or not start.`  Lets take step by step to see what this means.
+File Systems Mounted:
+Filesystem      Size  Used Avail Use% Mounted on
+overlay         108G  8.4G  100G   8% /
+tmpfs            68M     0   68M   0% /dev
+tmpfs           2.1G     0  2.1G   0% /sys/fs/cgroup
+/dev/xvda1      108G  8.4G  100G   8% /etc/hosts
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           2.1G   13k  2.1G   1% /run/secrets/kubernetes.io/serviceaccount
+tmpfs           2.1G     0  2.1G   0% /proc/acpi
+tmpfs           2.1G     0  2.1G   0% /proc/scsi
+tmpfs           2.1G     0  2.1G   0% /sys/firmware
+```
+
+# What is the OS Image
 
 ```bash
 % grid run argecho.py --arg1 1 --arg2 2
@@ -57,61 +124,62 @@ WARNING Neither a CPU or GPU number was specified. 1 CPU will be used as a defau
 └────────────┴────────┴───────────────┴─────────────┴─────┘
 ```
 
-# Automatic Docker Image for each Code
+# New Container Image the first time
 
 ```
 % grid logs lurking-seahorse-950-expo
-[build] [2021-06-12T17:10:32.936442+00:00] #2 [internal] load .dockerignore
-[build] [2021-06-12T17:10:32.938459+00:00] #2 sha256:f24086de70a1def617720b869e6f64a715032d9e95119ea19a9ea6cbafbd416f
-[build] [2021-06-12T17:10:32.940141+00:00] #2 transferring context: 1.40kB done
-[build] [2021-06-12T17:10:32.941547+00:00] #2 DONE 0.0s
-[build] [2021-06-12T17:10:32.944168+00:00]
-[build] [2021-06-12T17:10:32.946329+00:00] #1 [internal] load build definition from Dockerfile
-[build] [2021-06-12T17:10:32.948228+00:00] #1 sha256:8b3217d9ee3778accf3c1a371c1fc3568587834fe34244409e5ea0008f0194f9
-[build] [2021-06-12T17:10:32.950302+00:00] #1 transferring dockerfile: 919B done
-[build] [2021-06-12T17:10:32.951945+00:00] #1 DONE 0.0s
-[build] [2021-06-12T17:10:32.953650+00:00]
-[build] [2021-06-12T17:10:32.955074+00:00] #4 [auth] sharing credentials for ******
-[build] [2021-06-12T17:10:32.956382+00:00] #4 sha256:b37dee98fa18b7f3b19d84b4767874b50aacc98087533b0642816f985594e364
-[build] [2021-06-12T17:10:33.037986+00:00] #4 DONE 0.0s
-[build] [2021-06-12T17:10:33.039408+00:00]
-[build] [2021-06-12T17:10:33.040804+00:00] #3 [internal] load metadata for ******/*******************/grid-images__cpu-ubuntu18.04-py3.8-torch1.7.1-pl1.2.1:manual-v11
-[build] [2021-06-12T17:10:33.042730+00:00] #3 sha256:4540001f5a12c554b7786650ec54b1b8863d8fff62177230e535c46a72d24e8a
-[build] [2021-06-12T17:10:33.044771+00:00] #3 DONE 0.2s
-[build] [2021-06-12T17:10:33.046124+00:00]
-[build] [2021-06-12T17:10:33.047565+00:00] #5 [1/5] FROM ******/*******************/grid-images__cpu-ubuntu18.04-py3.8-torch1.7.1-pl1.2.1:manual-v11@sha256:181b4da827cd281228f4031893d27b848c1d3fb082de98ab3063def79397987b
-[build] [2021-06-12T17:10:33.049552+00:00] #5 sha256:84322125a6416abfae49b8b9db1fb113872d038a42a582c13c0230622eac03cc
-[build] [2021-06-12T17:10:33.051652+00:00] #5 DONE 0.0s
-[build] [2021-06-12T17:10:33.053334+00:00]
-[build] [2021-06-12T17:10:33.055196+00:00] #8 [internal] load build context
-[build] [2021-06-12T17:10:33.056896+00:00] #8 sha256:60ff35ccf667497c6aba05acb6020f1d7c33826055ab1f66138e5fe6b81d1d08
-[build] [2021-06-12T17:10:33.187845+00:00] #8 transferring context: 35.62kB 0.0s done
-[build] [2021-06-12T17:10:33.189646+00:00] #8 DONE 0.0s
-[build] [2021-06-12T17:10:33.191211+00:00]
-[build] [2021-06-12T17:10:33.192822+00:00] #6 [2/5] RUN mkdir -p /gridai/project
-[build] [2021-06-12T17:10:33.194491+00:00] #6 sha256:81fd188b4a24485284ab4b0b9e5fdd7224a9d3c54acc4194937d11c1253a1877
-[build] [2021-06-12T17:10:33.196076+00:00] #6 CACHED
-[build] [2021-06-12T17:10:33.197517+00:00]
-[build] [2021-06-12T17:10:33.198806+00:00] #7 [3/5] WORKDIR /gridai/project
-[build] [2021-06-12T17:10:33.200079+00:00] #7 sha256:9760fc3a0d9095e7bce9c21b3e431b6ca9a5bd5f6297f141f6ecef67052ffe70
-[build] [2021-06-12T17:10:33.201300+00:00] #7 CACHED
-[build] [2021-06-12T17:10:33.202666+00:00]
-[build] [2021-06-12T17:10:33.204075+00:00] #9 [4/5] COPY / /gridai/project/
-[build] [2021-06-12T17:10:33.205453+00:00] #9 sha256:a9d816a707fc7ad2b8310777c3058fc94dd428555e80e541322e63023763c9fe
-[build] [2021-06-12T17:10:33.334630+00:00] #9 DONE 0.3s
-[build] [2021-06-12T17:10:33.484782+00:00]
-[build] [2021-06-12T17:10:33.486307+00:00] #10 [5/5] RUN echo "Beginning Project Specific Installations" &&     echo "Finished Project Specific Installations"
-[build] [2021-06-12T17:10:33.487523+00:00] #10 sha256:48c57affd992bd20c891e36532e9ef333d8da4378a0cd9b79ef0b2a95c1736d2
-[build] [2021-06-12T17:10:34.045354+00:00] #10 0.606 Beginning Project Specific Installations
-[build] [2021-06-12T17:10:34.046641+00:00] #10 0.606 Finished Project Specific Installations
-[build] [2021-06-12T17:10:34.047828+00:00] #10 DONE 0.6s
-[build] [2021-06-12T17:10:34.048907+00:00]
-[build] [2021-06-12T17:10:34.049976+00:00] #11 exporting to image
-[build] [2021-06-12T17:10:34.051006+00:00] #11 sha256:e8c613e07b0b7ff33893b694f7759a10d42e180f2b4dc349fb57dc6b71dcab00
-[build] [2021-06-12T17:10:34.052169+00:00] #11 exporting layers 0.1s done
-[build] [2021-06-12T17:10:34.084830+00:00] #11 writing image sha256:ef2ca278f3728374871c70888987b3ba1cbe731a16810cdaeae3108117fe52d1 done
-[build] [2021-06-12T17:10:34.086090+00:00] #11 naming to ******/*******************/robert-s-lee__argecho-cpu:1019d109-f6aedbcc5bbd6b76cfdd792164f4b9bf done
-[build] [2021-06-12T17:10:34.087231+00:00] #11 DONE 0.1s
+
+#1 [internal] load .dockerignore
+#1 sha256:2891c97ac248f2c635407e8b3317d2eeafb9765c0e5be20faae93b057eef3e20
+#1 transferring context: 1.40kB done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 sha256:e3b8a23a1d4333ee59e25ae7eebd54ba6d4de075310e0e299c2916c12d09ff32
+#2 transferring dockerfile: 919B done
+#2 DONE 0.0s
+
+#4 [auth] sharing credentials for ******
+#4 sha256:ec0c71a19b372a4526a4af8fe0796bcb06f45989df362231c6426e3f13caaffa
+#4 DONE 0.0s
+
+#3 [internal] load metadata for ******/*******************/grid-images__cpu-ubuntu18.04-py3.8-torch1.7.1-pl1.2.1:manual-v11
+#3 sha256:4540001f5a12c554b7786650ec54b1b8863d8fff62177230e535c46a72d24e8a
+#3 DONE 0.2s
+
+#5 [1/5] FROM ******/*******************/grid-images__cpu-ubuntu18.04-py3.8-torch1.7.1-pl1.2.1:manual-v11@sha256:181b4da827cd281228f4031893d27b848c1d3fb082de98ab3063def79397987b
+#5 sha256:84322125a6416abfae49b8b9db1fb113872d038a42a582c13c0230622eac03cc
+#5 DONE 0.0s
+
+#8 [internal] load build context
+#8 sha256:5289e3f8dad299c21c82d8d5931d5997e2c0de3281f1793caa7352ed54535aee
+#8 transferring context: 68.97kB 0.0s done
+#8 DONE 0.0s
+
+#6 [2/5] RUN mkdir -p /gridai/project
+#6 sha256:81fd188b4a24485284ab4b0b9e5fdd7224a9d3c54acc4194937d11c1253a1877
+#6 CACHED
+
+#7 [3/5] WORKDIR /gridai/project
+#7 sha256:9760fc3a0d9095e7bce9c21b3e431b6ca9a5bd5f6297f141f6ecef67052ffe70
+#7 CACHED
+
+#9 [4/5] COPY / /gridai/project/
+#9 sha256:faaadeb1dc106a72aca8998b072800d64cb043db5c6e526845cc8944b4df743c
+#9 DONE 0.0s
+
+#10 [5/5] RUN echo "Beginning Project Specific Installations" &&     echo "Finished Project Specific Installations"
+#10 sha256:95f3bf0e474a18e4b9dd2ce94cebd70b407455325a7ffe1aba9d7fd1b96ce371
+#10 0.480 Beginning Project Specific Installations
+#10 0.480 Finished Project Specific Installations
+#10 DONE 0.5s
+
+#11 exporting to image
+#11 sha256:e8c613e07b0b7ff33893b694f7759a10d42e180f2b4dc349fb57dc6b71dcab00
+#11 exporting layers 0.1s done
+#11 writing image sha256:0c5e6e970377147765ff1e76c6675da7e528dfbfa57655fdfd6b133f6ef2b8d8 done
+#11 naming to ******/*******************/robert-s-lee__argecho-cpu:f2abb8dd2401638142230e57ef07612104f5784e-f6aedbcc5bbd6b76cfdd792164f4b9bf done
+#11 DONE 0.1s
 Experiment is pending. Logs will be available when experiment starts.
 ```
 
@@ -152,6 +220,8 @@ Experiment is pending. Logs will be available when experiment starts.
 │ nifty-cuttlefish-238      │ 2021-06-11 16:17:06+0000 │           1 │      1 │       0 │         0 │
 │ manipulative-newt-557     │ 2021-06-11 15:59:18+0000 │           1 │      1 │       0 │         0 │
 ```
+
+# Reuse Cached Container Image the sunsequent time
 
 
 ```
