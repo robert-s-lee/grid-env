@@ -25,24 +25,24 @@ Lets look at command line arguments, storage devices, and OS.  Working directory
 For those on OSX, Linux, Windows:
 
 - Access to Grid
-```
+```bash
 conda create -name gridai --python=3.8.5
 conda activate gridai
 pip install lightning-grid
 grid login --username xxxx --key xxxx
 ```
 - Obtain the sample code
-```
+```bash
 git clone https://github.com/robert-s-lee/argecho
 cd argecho 
 ```
 - Run the code locally and Grid
-```
+```bash
 python   argecho.py --arg1 1 --arg2 2
 grid run argecho.py --arg1 1 --arg2 2
 ```
 The output from local:
-```
+```bash
 % python   argecho.py --arg1 1 --arg2 2
 
 Arguments:
@@ -59,7 +59,7 @@ Filesystem       Size   Used  Avail Capacity iused      ifree %iused  Mounted on
 
 
 The output from Grid:
-```
+```bash
 Arguments:
 Number of arguments: 5 arguments.
 Argument List: ['argecho.py', '--arg1', '1', '--arg2', '2']
@@ -105,7 +105,7 @@ WARNING Neither a CPU or GPU number was specified. 1 CPU will be used as a defau
 
 ```
 
-```
+```bash
 % grid status
 ✔ Done!
 ┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
@@ -126,7 +126,7 @@ WARNING Neither a CPU or GPU number was specified. 1 CPU will be used as a defau
 
 # New Container Image the first time
 
-```
+```bash
 % grid logs lurking-seahorse-950-expo
 
 #1 [internal] load .dockerignore
@@ -185,7 +185,7 @@ Experiment is pending. Logs will be available when experiment starts.
 
 - when the run is complete, it will no longer show on `grid status` command.  
 
-```
+```bash
 % grid status
 ✔ Done!
 ┏━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
@@ -206,7 +206,7 @@ Experiment is pending. Logs will be available when experiment starts.
 
 - Per instruction above, use `grid history` to view Run history.  The list is sorted by the `Created At` date.
 
-```
+```bash
  % grid history
 ✔ Done!
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┓
@@ -224,7 +224,7 @@ Experiment is pending. Logs will be available when experiment starts.
 # Reuse Cached Container Image the sunsequent time
 
 
-```
+```bash
  % grid logs crystal-ermine-224-exp0
 [stdout] [2021-06-12T17:24:11.162831+00:00] Arguments:
 [stdout] [2021-06-12T17:24:11.162879+00:00] Number of arguments: 2 arguments.
