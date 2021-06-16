@@ -1,1 +1,3 @@
 *.swp
+optuna/data/*
+optuna/lightning_logs/*
