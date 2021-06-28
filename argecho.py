@@ -23,22 +23,18 @@ while(True):
       break
 result.terminate()
 
-# files in current dir
-print("\nFiles:")
-os.cmd("find . -print > find.txt")
-
 # python packages
 print("\nPython Version:")
 print(sys.version)
 
 # files in current dir
-print("\nConda:")
-os.cmd("conda env list > conda.env.list.txt")
+print("\nFiles:")
+os.system("find . -print | tee find.txt")
 
+# files in current dir
+print("\nConda:")
+os.system("conda env list | tee conda.env.list.txt")
 
 print("\nPython Packages:")
-installed_packages = pkg_resources.working_set
-installed_packages_list = sorted(["%s==%s" % (i.key, i.version)
-   for i in installed_packages])
-for p in installed_packages_list:
-    print(p)   
+os.system("pip freeze | tee pip.freeze.txt")
+  
