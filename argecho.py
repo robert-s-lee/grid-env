@@ -25,14 +25,7 @@ result.terminate()
 
 # files in current dir
 print("\nFiles:")
-result = subprocess.Popen(['find', '.', '-print'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-while(True):
-   retcode = result.poll() 
-   line = result.stdout.readline()
-   print(line.decode("utf-8").strip())
-   if retcode is not None:
-      break   
-result.terminate()
+os.cmd("find . -print > find.txt")
 
 # python packages
 print("\nPython Version:")
@@ -40,14 +33,8 @@ print(sys.version)
 
 # files in current dir
 print("\nConda:")
-result = subprocess.Popen(['conda', 'env', 'list'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-while(True):
-   retcode = result.poll() 
-   line = result.stdout.readline()
-   print(line.decode("utf-8").strip())
-   if retcode is not None:
-      break  
-result.terminate()
+os.cmd("conda env list > conda.env.list.txt")
+
 
 print("\nPython Packages:")
 installed_packages = pkg_resources.working_set
