@@ -1,6 +1,7 @@
 import sys
 import os
 import subprocess
+import pkg_resources
 
 # args
 print("Arguments:")
@@ -20,3 +21,34 @@ while(True):
    print(line.decode("utf-8").strip())
    if retcode is not None:
       break
+
+# files in current dir
+print("\nFiles:")
+result = subprocess.Popen(['find', '.', '-print'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+while(True):
+   retcode = result.poll() 
+   line = result.stdout.readline()
+   print(line.decode("utf-8").strip())
+   if retcode is not None:
+      break   
+
+# python packages
+print("\nPython Version:")
+print(sys.version)
+
+# files in current dir
+print("\nConda:")
+result = subprocess.Popen(['conda', 'env', 'list'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+while(True):
+   retcode = result.poll() 
+   line = result.stdout.readline()
+   print(line.decode("utf-8").strip())
+   if retcode is not None:
+      break  
+
+print("\nPython Packages:")
+installed_packages = pkg_resources.working_set
+installed_packages_list = sorted(["%s==%s" % (i.key, i.version)
+   for i in installed_packages])
+for p in installed_packages_list:
+    print(p)   
