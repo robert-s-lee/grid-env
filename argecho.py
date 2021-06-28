@@ -21,6 +21,7 @@ while(True):
    print(line.decode("utf-8").strip())
    if retcode is not None:
       break
+result.terminate()
 
 # files in current dir
 print("\nFiles:")
@@ -31,6 +32,7 @@ while(True):
    print(line.decode("utf-8").strip())
    if retcode is not None:
       break   
+result.terminate()
 
 # python packages
 print("\nPython Version:")
@@ -45,6 +47,7 @@ while(True):
    print(line.decode("utf-8").strip())
    if retcode is not None:
       break  
+result.terminate()
 
 print("\nPython Packages:")
 installed_packages = pkg_resources.working_set
