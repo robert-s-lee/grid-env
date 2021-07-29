@@ -7,9 +7,8 @@ import pkg_resources
 
 # args
 print("Arguments:")
-print(f'Argument List: {str(sys.argv)}')
 print(f'Number of arguments: {len(sys.argv)} arguments.')
-
+print(f'Argument List: {str(sys.argv)}')
 
 # current wd
 print("\nWorking Directory:")
