@@ -22,20 +22,21 @@ os.system("mkdir -p logs")
 
 # network
 print("\nNetwork:")
-os.system("ifconfig -a > ./logs/ifconfig.txt")
+os.system("ip link show > ./logs/iplink.txt 2>&1")
+os.system("ip route list > ./logs/iproute.txt 2>&1")
 
 # what are mounted
 print("\nFile Systems Mounted:")
-os.system("df -kH > ./logs/df.txt")
+os.system("df -kH > ./logs/df.txt 2>&1")
 
 # files in current dir
 print("\nFiles:")
-os.system("find . -print > ./logs/find.txt")
+os.system("find . -print > ./logs/find.txt 2>&1")
 
 # conda
 print("\nConda:")
-os.system("conda env list > ./logs/conda.env.list.txt")
+os.system("conda env list > ./logs/conda.env.list.txt 2>&1")
 
 print("\nPython Packages:")
-os.system("pip freeze > ./logs/pip.freeze.txt")
+os.system("pip freeze > ./logs/pip.freeze.txt 2>&1")
   
