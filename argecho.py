@@ -14,20 +14,25 @@ print(f'Argument List: {str(sys.argv)}')
 print("\nWorking Directory:")
 print(f'os.getcwd={os.getcwd()}')
 
-# what are mounted
-print("\nFile Systems Mounted:")
-os.system("mkdir -p logs")
-os.system("df -kH | tee ./logs/df.txt")
-
 # python packages
 print("\nPython Version:")
 print(sys.version)
+
+os.system("mkdir -p logs")
+
+# network
+print("\nNetwork:")
+os.system("ifconfig -a | tee ./logs/ifconfig.txt")
+
+# what are mounted
+print("\nFile Systems Mounted:")
+os.system("df -kH | tee ./logs/df.txt")
 
 # files in current dir
 print("\nFiles:")
 os.system("find . -print | tee ./logs/find.txt")
 
-# files in current dir
+# conda
 print("\nConda:")
 os.system("conda env list | tee ./logs/conda.env.list.txt")
 

@@ -4,3 +4,4 @@ optuna/lightning_logs/*
 logs/*
 .DS_Store
 .DS_Store
+.DS_Store
