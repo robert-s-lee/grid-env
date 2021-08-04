@@ -1,4 +1,5 @@
-Grid can run any Python code with *Zero Modifications*.
+Grid can run any code with *Zero Modifications*.  This tutorial shows running Python code and Bash script.
+
 This tutorial provides an overview on how *Zero Modifications* is accomplished.
 To follow this tutorial, please sign up for free [Community Grid](https://www.grid.ai/). 
 Optionally, join [Community Slack](http://gridai-community.slack.com/) and review [Docs](https://docs.grid.ai/).
