@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+mkdir -p logs
+
 # args
 echo "Arguments:"
 echo "$@" > ./logs/args.txt 2>&1
@@ -11,8 +13,6 @@ pwd > ./logs/pwd.txt 2>&1
 # python packages
 echo "Python Version:"
 python --version > ./logs/pythonversion.txt 2>&1
-
-mkdir -p logs
 
 # network
 echo "Network:"
