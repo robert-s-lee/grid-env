@@ -4,6 +4,7 @@ import sys
 import os
 import subprocess
 import pkg_resources
+import time
 
 # args
 print("Arguments:")
@@ -43,4 +44,6 @@ os.system("pip freeze > ./logs/pip.freeze.txt 2>&1")
 # libaries
 print("\nLibraries")
 os.system("ldconfig -p > ./logs/ldconfig.txt 2>&1")
-  
+
+# wait at least one minute
+time.sleep(60) 
