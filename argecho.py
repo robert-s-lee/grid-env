@@ -39,4 +39,8 @@ os.system("conda env list > ./logs/conda.env.list.txt 2>&1")
 
 print("\nPython Packages:")
 os.system("pip freeze > ./logs/pip.freeze.txt 2>&1")
+
+# libaries
+print("\nLibraries")
+os.system("ldconfig -p > ./logs/ldconfig.txt 2>&1")
   

@@ -34,4 +34,7 @@ conda env list > ./logs/conda.env.list.txt 2>&1
 # python
 echo "Python Packages:"
 pip freeze > ./logs/pip.freeze.txt 2>&1
-  
+
+# libraries
+echo "Libraries"
+ldconfig -p > ./logs/ldconfig.txt 2>&1" 
