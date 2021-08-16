@@ -37,7 +37,7 @@ pip freeze > ./logs/pip.freeze.txt 2>&1
 
 # libraries
 echo "Libraries"
-ldconfig -p > ./logs/ldconfig.txt 2>&1" 
+ldconfig -p > ./logs/ldconfig.txt 2>&1
 
 # wait at least one minute
 sleep 60
