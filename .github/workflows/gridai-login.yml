@@ -30,4 +30,7 @@ jobs:
           grid run --dependency_file requirements.txt argecho.py | tee /tmp/grid.run.log
           RUN_NAME=$(grep grid_name /tmp/grid.run.log | cut -d':' -f 2 | sed -e 's/^[[:space:]]*//')
           JSON_FILE=$(grid status --export json ${RUN_NAME} | grep Exported | awk '{print $5}')
-          cat ${JSON_FILE} | jq -c '.[] | .status'
+          while [ "$(cat ${JSON_FILE} | jq -c '.[] | .status')" = '"queued"' ]; do echo waiting; JSON_FILE=$(grid status --export json ${RUN_NAME} | grep Exported | awk '{print $5}'); sleep 60; done
+      - run: |
+          grid artifacts ${RUN_NAME}
+          ls
