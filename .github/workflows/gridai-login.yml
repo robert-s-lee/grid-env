@@ -26,4 +26,7 @@ jobs:
           pip install lightning-grid --upgrade
       - run: |
           grid login --username ${{ secrets.GRIDAI_USERNAME }} --key ${{ secrets.GRIDAI_KEY }}   
-          grid status    
+      - run: |
+          grid run --dependency_file requirements.txt argecho.py | tee /tmp/grid.run.log
+          RUN_NAME=$(grep grid_name /tmp/grid.run.log | cut -d':' -f 2 | sed -e 's/^[[:space:]]*//')
+          grid status --export csv $RUN_NAME | grep Exported | awk '{print $5}'
