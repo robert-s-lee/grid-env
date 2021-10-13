@@ -25,5 +25,5 @@ jobs:
       - run: |
           pip install lightning-grid --upgrade
       - run: |
-          grid login --username ${{ secrets.GRIDAI_USERNAME }} --${{ secrets.GRIDAI_KEY }}   
+          grid login --username ${{ secrets.GRIDAI_USERNAME }} --key ${{ secrets.GRIDAI_KEY }}   
           grid status    
