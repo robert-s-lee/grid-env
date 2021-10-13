@@ -1,0 +1,28 @@
+# examples from https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions
+# list of actions available https://github.com/actions
+name: "gridai-login"
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+  # run at 1:13 AM every day
+  # MIN HOUR DOM MON DOW CMD
+    - cron: '13 1 * * *'
+
+jobs:
+  gridlogin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8' # min version supported by Grid.ai
+      - run: |
+        python -m pip install --upgrade pip
+        pip install lightning-grid --upgrade
+      - run: |
+        grid login --username ${{ secrets.GRIDAI_USERNAME }} --${{ secrets.GRIDAI_KEY }}   
+        grid status    
