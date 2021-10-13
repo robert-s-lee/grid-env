@@ -27,10 +27,12 @@ jobs:
       - run: |
           grid login --username ${{ secrets.GRIDAI_USERNAME }} --key ${{ secrets.GRIDAI_KEY }}   
       - run: |
+          ls
+      - run: |
           grid run --dependency_file requirements.txt argecho.py | tee /tmp/grid.run.log
           RUN_NAME=$(grep grid_name /tmp/grid.run.log | cut -d':' -f 2 | sed -e 's/^[[:space:]]*//')
           JSON_FILE=$(grid status --export json ${RUN_NAME} | grep Exported | awk '{print $5}')
-          while [ "$(cat ${JSON_FILE} | jq -c '.[] | .status')" = '"queued"' ]; do echo waiting; JSON_FILE=$(grid status --export json ${RUN_NAME} | grep Exported | awk '{print $5}'); sleep 60; done
+          while [ "$(cat ${JSON_FILE} | jq -c '.[] | .status')" = '"queued"' ]; do echo "waiting on ${RUN_NAME}"; sleep 60; JSON_FILE=$(grid status --export json ${RUN_NAME} | grep Exported | awk '{print $5}'); done
       - run: |
           grid artifacts ${RUN_NAME}
           ls
