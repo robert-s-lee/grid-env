@@ -31,6 +31,7 @@ jobs:
       - run: |
           grid run --dependency_file requirements.txt argecho.py | tee /tmp/grid.run.log
           export RUN_NAME=$(grep grid_name /tmp/grid.run.log | cut -d':' -f 2 | sed -e 's/^[[:space:]]*//')
+          echo "::set-env name=RUN_NAME::${FOO}"
           JSON_FILE=$(grid status --export json ${RUN_NAME} | grep Exported | awk '{print $5}')
           while [ "$(cat ${JSON_FILE} | jq -c '.[] | .status')" = '"queued"' ]; do echo "waiting on ${RUN_NAME}"; sleep 60; JSON_FILE=$(grid status --export json ${RUN_NAME} | grep Exported | awk '{print $5}'); done
       - run: |
