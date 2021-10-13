@@ -29,4 +29,5 @@ jobs:
       - run: |
           grid run --dependency_file requirements.txt argecho.py | tee /tmp/grid.run.log
           RUN_NAME=$(grep grid_name /tmp/grid.run.log | cut -d':' -f 2 | sed -e 's/^[[:space:]]*//')
-          grid status --export csv $RUN_NAME | grep Exported | awk '{print $5}'
+          JSON_FILE=$(grid status --export json ${RUN_NAME} | grep Exported | awk '{print $5}')
+          cat ${JSON_FILE} | jq -c '.[] | .status'

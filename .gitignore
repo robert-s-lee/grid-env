@@ -6,3 +6,4 @@ logs/*
 .DS_Store
 .DS_Store
 grid-status-*
+grid_status-*
