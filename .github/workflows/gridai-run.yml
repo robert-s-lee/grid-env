@@ -30,6 +30,10 @@ jobs:
           grid run --dependency_file requirements.txt argecho.py | tee /tmp/grid.run.log
           RUN_NAME=$(grep grid_name /tmp/grid.run.log | cut -d':' -f 2 | sed -e 's/^[[:space:]]*//')
           echo "RUN_NAME=${RUN_NAME}" >> $GITHUB_ENV
+          if [["${#TAG_LIST[@]}" -ne 3 ]]; then
+            echo "$RELEASE_VERSION is not a valid semantic version"
+            exit 1
+          fi
           if [[ "${RUN_NAME}" == "" ]]; then echo "Error: grid_name not found in output"; exit 1; fi
         - run: |
           JSON_FILE=$(grid status --export json ${RUN_NAME} | grep Exported | awk '{print $5}')
