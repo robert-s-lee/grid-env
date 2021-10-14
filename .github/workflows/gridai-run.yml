@@ -25,7 +25,7 @@ jobs:
       - run: |
           grid login --username ${{ secrets.GRIDAI_USERNAME }} --key ${{ secrets.GRIDAI_KEY }}
       - run: |
-          grid run --use_spot --dependency_file requirements.txt argecho.py | tee /tmp/grid.run.log
+          grid run --localdir --use_spot --dependency_file requirements.txt argecho.py | tee /tmp/grid.run.log
           RUN_NAME=$(grep grid_name /tmp/grid.run.log | cut -d':' -f 2 | sed -e 's/^[[:space:]]*//')
           echo "RUN_NAME=${RUN_NAME}" >> $GITHUB_ENV
           if [[ -z "${RUN_NAME}" ]]; then
