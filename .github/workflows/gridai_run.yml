@@ -4,9 +4,9 @@ on:
   # push:
   pull_request:  
   schedule:
-  # run at 13 min past the hour every day
+  # run at 23 min past the hour every day
   # MIN HOUR DOM MON DOW CMD
-    - cron: 13 * * * *
+    - cron: 23 4,11,19 * * *
 
 jobs:
   gridai-run:
