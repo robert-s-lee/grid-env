@@ -6,7 +6,7 @@ jobs:
     name: grid-env run
     steps:
       - uses: actions/checkout@v2
-      - id: gridai login
+      - id: gridai_login
         uses: robert-s-lee/gridai_action_login@main
         with:
           username: ${{ secrets.GRIDAI_USERNAME }} 
