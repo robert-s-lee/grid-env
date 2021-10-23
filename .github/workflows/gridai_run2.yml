@@ -13,6 +13,6 @@ jobs:
         with:
           username: ${{ secrets.GRIDAI_USERNAME }} 
           key: ${{ secrets.GRIDAI_KEY }}       
-      - run: |
-          pwd
-          ls -lia ~
+      - uses: robert-s-lee/gridai_action_run@main
+        with:
+          script_name: argecho.py 
