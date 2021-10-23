@@ -13,13 +13,12 @@ jobs:
         with:
           username: ${{ secrets.GRIDAI_USERNAME }} 
           key: ${{ secrets.GRIDAI_KEY }}       
-#      - id: run
-#        uses: robert-s-lee/gridai_action_run@main
-#        with:
-#          script_name: argecho.py 
+      - id: run
+        uses: robert-s-lee/gridai_action_run@main
+        with:
+          script_name: argecho.py 
       - uses: robert-s-lee/actions@main
         with:
           obj_type: run 
-#          obj_id: ${{ steps.run.outputs.RUN_NAME }}
-          obj_id: daring-perch-330
+          obj_id: ${{ steps.run.outputs.RUN_NAME }}
        
