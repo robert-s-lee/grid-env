@@ -1,0 +1,13 @@
+on: [push]
+
+jobs:
+  grid_env_run:
+    runs-on: ubuntu-latest
+    name: grid-env run
+    steps:
+      - uses: actions/checkout@v2
+      - id: gridai login
+        uses: robert-s-lee/gridai_action_login@main
+        secrets:
+          username: ${{ secrets.GRIDAI_USERNAME }} 
+          key: ${{ secrets.GRIDAI_KEY }}          
