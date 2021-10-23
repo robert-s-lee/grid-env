@@ -20,5 +20,6 @@ jobs:
       - uses: robert-s-lee/actions@main
         with:
           obj_type: run 
-          obj_id: ${run_name}
+#          obj_id: ${run_name}
+          obj_id: ${{ steps.run.outputs.run_name }}
        
