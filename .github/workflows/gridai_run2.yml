@@ -8,6 +8,6 @@ jobs:
       - uses: actions/checkout@v2
       - id: gridai login
         uses: robert-s-lee/gridai_action_login@main
-        secrets:
+        with:
           username: ${{ secrets.GRIDAI_USERNAME }} 
           key: ${{ secrets.GRIDAI_KEY }}          
