@@ -1,0 +1,24 @@
+on: [push]
+
+jobs:
+  grid_env_run:
+    runs-on: ubuntu-latest
+    name: grid-env run
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ inputs.python_version }}      
+      - uses: robert-s-lee/gridai_action_login@main
+        with:
+          username: ${{ secrets.GRIDAI_USERNAME }} 
+          key: ${{ secrets.GRIDAI_KEY }}       
+      - id: run
+        uses: robert-s-lee/gridai_action_run@main
+        with:
+          script_name: argecho.py 
+      - uses: robert-s-lee/actions@main
+        with:
+          obj_type: run 
+          obj_id: ${{ steps.run.outputs.run_name }}
+       
