@@ -5,7 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     name: grid-env run
     steps:
-      - id: run
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
@@ -14,7 +13,8 @@ jobs:
         with:
           username: ${{ secrets.GRIDAI_USERNAME }} 
           key: ${{ secrets.GRIDAI_KEY }}       
-      - uses: robert-s-lee/gridai_action_run@main
+      - id: run
+        uses: robert-s-lee/gridai_action_run@main
         with:
           script_name: argecho.py 
       - uses: robert-s-lee/actions@main
