@@ -14,4 +14,4 @@ jobs:
           username: ${{ secrets.GRIDAI_USERNAME }} 
           key: ${{ secrets.GRIDAI_KEY }}       
       - run: |
-          ls -lia 
+          ls -lia ~
