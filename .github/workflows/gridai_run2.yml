@@ -18,7 +18,9 @@ jobs:
         with:
           script_name: argecho.py 
       - run: |
-          echo "steps: ${{ steps.foo.outputs.random-number }}" 
+          echo "steps: ${{ steps.foo.outputs.run_name }}" 
+          echo "steps: ${run_name}" 
+
       - uses: robert-s-lee/actions@main
         with:
           obj_type: run 
