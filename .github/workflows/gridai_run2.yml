@@ -6,6 +6,9 @@ jobs:
     name: grid-env run
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ inputs.python_version }}      
       - id: gridai_login
         uses: robert-s-lee/gridai_action_login@main
         with:
