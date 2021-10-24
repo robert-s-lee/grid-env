@@ -14,5 +14,9 @@ jobs:
         uses: robert-s-lee/gridai_action_run@main
         with:
           script_name: argecho.py 
+      - run: |
+          if [ "${{ steps.run.outputs.obj_status }}"" != "succeeded" ]; then
+            exit 1
+          fi
 
 
