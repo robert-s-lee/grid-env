@@ -5,10 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     name: grid-env run
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ inputs.python_version }}      
+      - uses: actions/checkout@v2     
       - uses: robert-s-lee/gridai_action_login@main
         with:
           username: ${{ secrets.GRIDAI_USERNAME }} 
@@ -17,12 +14,5 @@ jobs:
         uses: robert-s-lee/gridai_action_run@main
         with:
           script_name: argecho.py 
-      - run: |
-          echo "steps: ${{ steps.run.outputs.run_name }}" 
-          echo "steps: ${run_name}" 
 
-      - uses: robert-s-lee/actions@main
-        with:
-          obj_type: run 
-          obj_id: ${run_name}
-          # cannot figure out how to get the output of the actions
+
