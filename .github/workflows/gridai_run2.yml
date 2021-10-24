@@ -5,10 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     name: grid-env run
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ inputs.python_version }}      
+      - uses: actions/checkout@v2     
       - uses: robert-s-lee/gridai_action_login@main
         with:
           username: ${{ secrets.GRIDAI_USERNAME }} 
@@ -17,8 +14,8 @@ jobs:
         uses: robert-s-lee/gridai_action_run@main
         with:
           script_name: argecho.py 
-      - uses: robert-s-lee/actions@main
-        with:
-          obj_type: run 
-          obj_id: ${{ steps.run.outputs.run_name }}
-       
+      - run: |
+          if [ "${{ steps.run.outputs.obj_status }}" != "succeeded" ]; then
+            exit 1
+          fi
+
